@@ -5,12 +5,13 @@
       </div>
       <div v-else>
         <div class="row mb-4" v-for="row in rows" :key="'row' + row">
-          <div class="col" v-for="(bookable, columns) in bookablesInRow(row)"
-            :key="'row' + row + columns">
+          <div
+            class="col d-flex align-items-stretch"
+            v-for="(bookable, column) in bookablesInRow(row)"
+            :key="'row' + row + column">
             <bookable-list-item
             :item-title="bookable.title"
-            :item-content="bookable.content"
-            :price="1000"
+            :item-description="bookable.description"
             ></bookable-list-item>
           </div>
           <div class="col" v-for="p in placeholdersInRow(row)" :key="'placeholder' + row + p"></div>
@@ -50,38 +51,25 @@ export default {
     },
     created() {
       this.loading = true;
-      setTimeout(() => {
-        this.bookables = [{
-          title: "Expensive villa!!!!",
-          content: "A very cheap villa"
-        },
-        {
-          title: "Cheap villa",
-          content: "A very cheacp Villa2"
-        },
-        {
-          title: "Cheap villa",
-          content: "A very cheacp Villa2"
-        },
-        {
-          title: "Cheap villa",
-          content: "A very cheacp Villa2"
-        },
-        {
-          title: "Cheap villa",
-          content: "A very cheacp Villa2"
-        },
-        {
-          title: "Cheap villa",
-          content: "A very cheacp Villa2"
-        },
-        {
-          title: "Cheap villa",
-          content: "A very cheacp Villa2"
-        }
-        ];
-      this.loading = false;
-    }, 2000);
+
+      const p = new Promise((resolve, reject) => {
+        console.log(resolve);
+        console.log(reject);
+        setTimeout(() => resolve("Hello"), 200);
+      })
+      .then(result => "Hello again " + result)
+      .then(result => console.log(`Success ${result}`))
+      .catch(result => console.log(`Error ${result}`));
+      console.log(p);
+
+      const request = axios
+      .get("/api/bookables")
+      .then(response => {
+        this.bookables = response.data;
+        this.bookables.push({ title: "x", description: "x"});
+        this.loading = false;
+      });
+      console.log(request);
     }
 };
 </script>
