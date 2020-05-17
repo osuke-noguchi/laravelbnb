@@ -219,6 +219,7 @@
                 "uppercase",
                 "words"
             ],
+            "funding": [
                 {
                     "url": "https://www.doctrine-project.org/sponsorship.html",
                     "type": "custom"
