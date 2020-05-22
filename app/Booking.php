@@ -15,6 +15,11 @@ class Booking extends Model
         return $this->belongsTo(Bookable::class);
     }
 
+    public function reviews()
+    {
+        return $this->hasOne(Review::class); //1つの予約には1つのレビューが紐づく
+    }
+
     public function scopeBetweenDates(Builder $query, $from, $to)
     {
         return $query->where('to', '>=', $from)
