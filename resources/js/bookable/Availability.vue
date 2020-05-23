@@ -34,7 +34,7 @@
         @keyup.enter="check"
         :class="[{'is-invalid': this.errorFor('to')}]">
         <div class="invalid-feedback"
-          v-for="(error, index) in this.errorFor('to')" 
+          v-for="(error, index) in this.errorFor('to')"
           :key="'to' + index">
           {{error}}
           </div>
@@ -48,6 +48,9 @@
 
 <script>
 export default {
+  props: {
+    bookableId: String
+  },
   data() {
     return {
       from: null,
@@ -63,7 +66,7 @@ export default {
       this.errors = null;
 
       axios.get(
-        `/api/bookables/${this.$route.params.id}/availability?from=${this.from}&to=${this.to}`
+        `/api/bookables/${this.bookableId}/availability?from=${this.from}&to=${this.to}`
       )
       .then(response => {
           this.status = response.status;
