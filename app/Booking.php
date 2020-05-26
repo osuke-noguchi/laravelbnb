@@ -2,21 +2,21 @@
 
 namespace App;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
 
 class Booking extends Model
 {
 
     protected $fillable = ['from', 'to'];
 
-    public function bookble()
+    public function bookable()
     {
         return $this->belongsTo(Bookable::class);
     }
 
-    public function reviews()
+    public function review()
     {
         return $this->hasOne(Review::class); //1つの予約には1つのレビューが紐づく
     }
