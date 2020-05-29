@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="row" v-if="error"> Unknown error ha occured, please try again later!</div>
+    <div class="row" v-if="error"> Unknown error has occured, please try again later!</div>
     <div class="row" v-else>
       <div :class="[{'col-md-4': twoColumns}, {'d-none': oneColumn}]">
         <div class="card">
@@ -9,8 +9,8 @@
             <div v-if="hasBooking">
               <p>
               Stayed at
-              <router-link :to="{name: 'bookable', params: {id: booking.bookable.bookable_id }}">
-                {{booking.bookable.title}}
+              <router-link :to="{name: 'bookable', params: { id: booking.bookable.bookable_id }}">
+                {{ booking.bookable.title }}
               </router-link>
               </p>
               <p>
@@ -24,7 +24,7 @@
         <div v-if="loading">Loading...</div>
         <div v-else>
           <div v-if="alreadyReviewed">
-          <h3>You're already left a review for this booking!</h3>
+            <h3>You've already left a review for this booking!</h3>
           </div>
           <div v-else>
             <div class="form-group">
@@ -37,12 +37,13 @@
             </div>
             <div class="form-group">
               <label for="content" class="text-muted">Describe your expirience with</label>
-              <textarea name="content" id="" cols="30" rows="10" class="form-control" v-model="review.content"></textarea>
+              <textarea name="content" cols="30" rows="10" class="form-control" v-model="review.content"></textarea>
             </div>
+
             <button class="btn btn-lg btn-primary btn-block">Submit</button>
           </div>
+        </div>
       </div>
-    </div>
     </div>
 
   </div>
@@ -86,6 +87,7 @@ export default {
 
           // if(!is404(err)) {
           // this.error = true;
+          // }
         });
       }
       this.error = true;
