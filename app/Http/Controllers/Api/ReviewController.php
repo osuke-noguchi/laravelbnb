@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Review;
 use App\Booking;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ReviewResource;
+use App\Review;
+use Illuminate\Http\Request;
 
 
 class ReviewController extends Controller
@@ -16,11 +16,12 @@ class ReviewController extends Controller
         return new ReviewResource(Review::findOrFail($id));
     }
 
+
     public function store(Request $request)
     {
         $data = $request->validate([
             'id' => 'required|size:36|unique:reviews',
-            'content' => 'required:min:2',
+            'content' => 'required|min:2',
             'rating' => 'required|in:1,2,3,4,5'
         ]);
 
