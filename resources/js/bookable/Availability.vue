@@ -16,12 +16,8 @@
         placeholder="Start date"
         v-model="from"
         @keyup.enter="check"
-        :class="[{'is-invalid': this.errorFor('from')}]">
-        <div class="invalid-feedback"
-        v-for="(error, index) in this.errorFor('from')"
-        :key="'from' + index">
-        {{error}}
-        </div>
+        :class="[{'is-invalid': errorFor('from')}]">
+        <v-errors :errors="errorFor('from')"></v-errors>
       </div>
 
       <div class="form-group col-md-6">
@@ -32,12 +28,8 @@
         placeholder="End date"
         v-model="to"
         @keyup.enter="check"
-        :class="[{'is-invalid': this.errorFor('to')}]">
-        <div class="invalid-feedback"
-          v-for="(error, index) in this.errorFor('to')"
-          :key="'to' + index">
-          {{error}}
-          </div>
+        :class="[{'is-invalid': errorFor('to')}]">
+        <v-errors :errors="errorFor('to')"></v-errors>
 
       </div>
     </div>
@@ -47,7 +39,12 @@
 </template>
 
 <script>
+import { is422 } from "./../shared/utils/response";
+import validationErrors from "./../shared/mixins/validationErrors";
+
+
 export default {
+  mixins: [validationErrors],
   props: {
     bookableId: String
   },
@@ -57,7 +54,6 @@ export default {
       to: null,
       loading: false,
       status: null,
-      errors: null,
     }
   },
   methods: {
@@ -72,15 +68,12 @@ export default {
           this.status = response.status;
       })
       .catch(error => {
-        if (422 === error.response.status) {
+        if (is422(error)) {
           this.errors = error.response.data.errors;
         }
         this.status = error.response.status;
       })
       .then(() => (this.loading = false));
-    },
-    errorFor(field) {
-      return this.hasErrors && this.errors[field] ? this.errors[field] : null;
     }
   },
   computed: {
