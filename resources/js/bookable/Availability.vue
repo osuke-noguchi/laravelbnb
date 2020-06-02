@@ -1,7 +1,7 @@
-.<template>
+<template>
   <div>
     <h6 class="text-uppercase text-secondary font-weight-bolder">
-      Check Availavility
+      Check Availability
       <transition name="fade">
         <span v-if="noAvailability" class="text-danger">(NOT AVAILABLE)</span>
         <span v-if="hasAvailability" class="text-success">(AVAILABLE)</span>
@@ -11,7 +11,7 @@
 
     <div class="form-row">
       <div class="form-group col-md-6">
-        <label for="from">Form</label>
+        <label for="from">From</label>
         <input type="text"
         name="from"
         class="form-control form-control-sm"
@@ -30,7 +30,7 @@
         placeholder="End date"
         v-model="to"
         @keyup.enter="check"
-        :class="[{'is-invalid': errorFor('to')}]">
+        :class="[{'is-invalid': errorFor('to')}]"/>
         <v-errors :errors="errorFor('to')"></v-errors>
 
       </div>
@@ -58,8 +58,8 @@ export default {
       from: this.$store.state.lastSearch.from,
       to: this.$store.state.lastSearch.to,
       loading: false,
-      status: null,
-    }
+      status: null
+    };
   },
   methods: {
     async check() {
@@ -77,10 +77,11 @@ export default {
       )).status;
       this.$emit("availability", this.hasAvailability)
       } catch (err) {
-        if (is422(error)) {
-          this.errors = error.response.data.errors;
+        if (is422(err)) {
+          this.errors = err.response.data.errors;
         }
-        this.status = error.response.status;
+        this.status = err.response.status;
+        this.$emit("availability", this.hasAvailability)
       }
 
       this.loading = false;
