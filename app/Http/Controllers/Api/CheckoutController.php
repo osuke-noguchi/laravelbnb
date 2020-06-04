@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Booking;
 use App\Bookable;
+use App\Address;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class CheckoutController extends Controller
 {
@@ -31,7 +33,7 @@ class CheckoutController extends Controller
             'customer.zip' => 'required|min:2'
         ]);
 
-        $data = array_merge($request->validate([
+        $data = array_merge($data, $request->validate([
             'bookings.*' => ['required', function ($attibute, $value, $fail) {
                 $bookable = Bookable::findOrFail($value['bookable_id']);
 
@@ -40,5 +42,25 @@ class CheckoutController extends Controller
                 }
             }]
         ]));
+
+        $bookingsData = $data['bookings'];
+        $addressData = $data['customer'];
+
+        $bookings = collect($bookingsData)->map(function ($bookingData) use ($addressData) {
+            $booking = new Booking();
+            $booking->from = $bookingData['from'];
+            $booking->to = $bookingData['to'];
+            $booking->price = 200;
+            $booking->bookable_id = $bookingData['bookable_id'];
+
+            $booking->address()->associate(Address::create($addressData));
+
+            $booking->save();
+
+            return $booking;
+        });
+
+        return $bookings;
+
     }
 }
